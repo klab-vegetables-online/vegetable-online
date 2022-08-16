@@ -31,29 +31,29 @@ class BlogSubCategoryController extends Controller
 
     public function store(Request $request)
     {
-        //
-        // $this->validate($request, [
-        //     'name' => 'required|string|max:255|unique:blogs',
-        //     'category_id' => 'required'
-           
-        // ]);
-        // $sub = BlogSubCategory::create([
-        //     'name' => $request->name,
-        //     'category_id' => $request->category_id,
-            
-        // ]);
         
-        // $res = [
-        //     'data' => $sub
-        // ];
-        return Response()->json('success', 200);
+        $this->validate($request, [
+            'name' => 'required|string|max:255',
+            'category_id' => 'required'
+           
+        ]);
+        $sub = BlogSubCategory::create([
+            'name' => $request->name,
+            'category_id' => $request->category_id,
+            
+        ]);
+        
+        $res = [
+            'data' => $sub
+        ];
+        return Response()->json($res, 200);
     }
 
     public function update(Request $request, $id)
     {
         //
         $this->validate($request, [
-            'name' => 'required|string|max:255|unique:blogs',
+            'name' => 'required|string',
             'category_id' => 'required'
            
         ]);
