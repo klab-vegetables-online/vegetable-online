@@ -53,7 +53,7 @@ class BlogSubCategoryController extends Controller
     {
         //
         $this->validate($request, [
-            'name' => 'required|string|max:255',
+            'name' => 'required|string',
             'category_id' => 'required'
            
         ]);
