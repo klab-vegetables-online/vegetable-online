@@ -99,7 +99,8 @@ class blogController extends Controller
             'sub_category_id' => 'required'
            
         ]);
-        $imagePath = $request->image->store('/uploads', 'public');
+        $imagePath = cloudinary()->uploadFile($request->file('image')->getRealPath())->getSecurePath();
+        // $imagePath = $request->image->store('/uploads', 'public');
         $blog = Blog::findOrFail($id);
         if($blog) {
             $blog->title = $request->title;
