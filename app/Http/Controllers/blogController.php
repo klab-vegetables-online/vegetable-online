@@ -6,18 +6,19 @@ use App\Models\Blog;
 use App\Models\BlogSubCategory;
 use Illuminate\Http\Request;
 
+
 class blogController extends Controller
 {
     public function getAllBlog()
     {
         
         try{
-          $blog = Blog::orderBy('id', 'desc')->with('blog_sub_categories')->get();
+          $blog = Blog::orderBy('id', 'desc')->with('category')->get();
           
-          if($sub){
+          if($blog){
             return response()->json([
                 'message' => 'All blogs Retrieved Succesfully',
-                'data' => $sub
+                'data' => $blog
             ], 200);
           }
         }
@@ -99,7 +100,8 @@ class blogController extends Controller
             'sub_category_id' => 'required'
            
         ]);
-        $imagePath = $request->image->store('/uploads', 'public');
+        $imagePath = cloudinary()->uploadFile($request->file('image')->getRealPath())->getSecurePath();
+        // $imagePath = $request->image->store('/uploads', 'public');
         $blog = Blog::findOrFail($id);
         if($blog) {
             $blog->title = $request->title;
