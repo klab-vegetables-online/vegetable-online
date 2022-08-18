@@ -12,12 +12,12 @@ class blogController extends Controller
     {
         
         try{
-          $blog = Blog::orderBy('id', 'desc')->with('blog_sub_categories')->get();
+          $blog = Blog::all();
           
-          if($sub){
+          if($blog){
             return response()->json([
                 'message' => 'All blogs Retrieved Succesfully',
-                'data' => $sub
+                'data' => $blog
             ], 200);
           }
         }
@@ -28,11 +28,6 @@ class blogController extends Controller
             ]);
 
         }
-        
-        
-        //
-        $blog = Blog::orderBy('id', 'desc')->get();
-        $blog = Categories::orderBy('id', 'desc')->get();
         
     }
 
