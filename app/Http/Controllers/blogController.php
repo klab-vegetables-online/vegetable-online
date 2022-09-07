@@ -6,13 +6,14 @@ use App\Models\Blog;
 use App\Models\BlogSubCategory;
 use Illuminate\Http\Request;
 
+
 class blogController extends Controller
 {
     public function getAllBlog()
     {
         
         try{
-          $blog = Blog::all();
+          $blog = Blog::orderBy('id', 'desc')->with('category')->get();
           
           if($blog){
             return response()->json([
@@ -28,6 +29,11 @@ class blogController extends Controller
             ]);
 
         }
+        
+        
+        //
+        $blog = Blog::orderBy('id', 'desc')->get();
+        $blog = Categories::orderBy('id', 'desc')->get();
         
     }
 
@@ -47,6 +53,7 @@ class blogController extends Controller
         ]);
         // uploading image direct to cloudinary
         $imagePath = cloudinary()->uploadFile($request->file('image')->getRealPath())->getSecurePath();
+        // $imagePath = $request->image->store('/uploads', 'public');
         $blog = Blog::create([
             'title' => $request->title,
             'description' => $request->description,
@@ -63,29 +70,22 @@ class blogController extends Controller
         return Response()->json($res, 200);
     }
 
-    
-    public function getBlogBysubCategory($id)
+    public function getBlogBysubCategory($id) 
     {
-        $subcategory =  BlogSubCategory::findOrFail($id);
-        if ($subcategory) {
-            $blog = Blog::where('sub_category_id', $id)->get();
-            if ($blog) {
-                return response()->json([
-                    'message' => 'true',
-                    'Blog' => $blog
-                ], 200);
-            } else {
-                return response()->json([
-                    'message' => 'false',
-                    'error' => 'No Blog Found'
-                ], 404);
-            }
+        $subcategory = BlogSubCategory::find($id);
+        $blog = Blog::where('sub_category_id', $id)->get();
+        if  ($blog) {
+            return response()->json([
+                'message' => 'true',
+                'blogs' => $blog
+            ], 200);
         } else {
             return response()->json([
                 'message' => 'false',
-                'error' => 'No SubCategory Found'
-            ], 404);
+                'error' => 'No blogs found'
+            ]);
         }
+        
     }
 
     public function update(Request $request, $id)
@@ -101,6 +101,7 @@ class blogController extends Controller
            
         ]);
         $imagePath = cloudinary()->uploadFile($request->file('image')->getRealPath())->getSecurePath();
+        // $imagePath = $request->image->store('/uploads', 'public');
         $blog = Blog::findOrFail($id);
         if($blog) {
             $blog->title = $request->title;
