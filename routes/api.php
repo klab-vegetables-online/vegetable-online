@@ -68,6 +68,7 @@ Route::prefix('v1')->group(function () {
     Route::prefix('/Blog')->group(function () {
         //------------------public routes----------------------
         Route::get('/', [blogController::class, 'getAllBlog']);
+        Route::get('/bysubcategory/{id}', [blogController::class, 'getBlogBysubCategory']);
         Route::get('search/{search}', [blogController::class, 'search']);
         Route::get('/{id}', [blogController::class, 'show']);
         // -------------private Route--------------------------------

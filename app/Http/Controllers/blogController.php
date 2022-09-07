@@ -47,7 +47,6 @@ class blogController extends Controller
         ]);
         // uploading image direct to cloudinary
         $imagePath = cloudinary()->uploadFile($request->file('image')->getRealPath())->getSecurePath();
-        // $imagePath = $request->image->store('/uploads', 'public');
         $blog = Blog::create([
             'title' => $request->title,
             'description' => $request->description,
@@ -64,22 +63,29 @@ class blogController extends Controller
         return Response()->json($res, 200);
     }
 
-    public function getBlogBysubCategory($id) 
+    
+    public function getBlogBysubCategory($id)
     {
-        $subcategory = BlogSubCategory::find($id);
-        $blog = Blog::where('sub_category_id', $id)->get();
-        if  ($blog) {
-            return response()->json([
-                'message' => 'true',
-                'blogs' => $blog
-            ], 200);
+        $subcategory =  BlogSubCategory::findOrFail($id);
+        if ($subcategory) {
+            $blog = Blog::where('sub_category_id', $id)->get();
+            if ($blog) {
+                return response()->json([
+                    'message' => 'true',
+                    'Blog' => $blog
+                ], 200);
+            } else {
+                return response()->json([
+                    'message' => 'false',
+                    'error' => 'No Blog Found'
+                ], 404);
+            }
         } else {
             return response()->json([
                 'message' => 'false',
-                'error' => 'No blogs found'
-            ]);
+                'error' => 'No SubCategory Found'
+            ], 404);
         }
-        
     }
 
     public function update(Request $request, $id)
@@ -94,7 +100,7 @@ class blogController extends Controller
             'sub_category_id' => 'required'
            
         ]);
-        $imagePath = $request->image->store('/uploads', 'public');
+        $imagePath = cloudinary()->uploadFile($request->file('image')->getRealPath())->getSecurePath();
         $blog = Blog::findOrFail($id);
         if($blog) {
             $blog->title = $request->title;
