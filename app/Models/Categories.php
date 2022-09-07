@@ -15,9 +15,9 @@ class Categories extends Model
         
     ];
     
-    public function blogs()
+    public function subcategories()
     {
-        return $this->hasMany(Blog::class, 'id' );
+        return $this->hasMany(BlogSubCategory::class);
     }
 
 }

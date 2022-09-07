@@ -13,11 +13,11 @@ class CategoryController extends Controller
     {
         
         try{
-          $data = Categories::orderBy('id', 'desc')->with('blogs')->get();
+          $data = Categories::all();
          
           if($data){
             return response()->json([
-                'message' => 'All categories With Blogs Retrieved successfully',
+                'message' => 'All categories Retrieved successfully',
                 'data' => $data
             ], 200);
           }
@@ -30,11 +30,8 @@ class CategoryController extends Controller
 
         }
         
-        
-        //
-        $data = Categories::all();
-        
     }
+    
 
     public function store(Request $request)
     {

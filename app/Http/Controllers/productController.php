@@ -50,7 +50,7 @@ class productController extends Controller
             'subcategoryId' => 'required|string|max:255',
 
         ]);
-        $imagePath = $request->image->store('/uploads', 'public');
+        $imagePath = cloudinary()->uploadFile($request->file('image')->getRealPath())->getSecurePath();
         $product = Product::create([
             'name' => $request->name,
             'price' => $request->price,
@@ -109,8 +109,7 @@ class productController extends Controller
             'status' => 'required|string|max:255',
 
         ]);
-
-        $imagePath = $request->image->store('/uploads', 'public');
+        $imagePath = cloudinary()->uploadFile($request->file('image')->getRealPath())->getSecurePath();
         $product = Product::find($id);
         if ($product) {
             $product->name = $request->name;
