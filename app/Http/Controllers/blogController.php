@@ -101,7 +101,6 @@ class blogController extends Controller
            
         ]);
         $imagePath = cloudinary()->uploadFile($request->file('image')->getRealPath())->getSecurePath();
-        // $imagePath = $request->image->store('/uploads', 'public');
         $blog = Blog::findOrFail($id);
         if($blog) {
             $blog->title = $request->title;
