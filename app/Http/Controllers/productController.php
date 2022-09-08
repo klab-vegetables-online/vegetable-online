@@ -57,7 +57,7 @@ class productController extends Controller
             'image' => $imagePath,
             'description' => $request->description,
             'subcategoryId' => $request->subcategoryId,
-            'status' => 'Available',
+            'status' => 'available',
 
         ]);
         $res = [
