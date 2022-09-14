@@ -17,7 +17,7 @@ class blogController extends Controller
           
           if($blog){
             return response()->json([
-                'message' => 'All blogs Retrieved Succesfully',
+                'message' => 'All blog Retrieved Succesfully',
                 'data' => $blog
             ], 200);
           }
